@@ -1,1 +1,31 @@
 /target
+**/*.rs.bk
+Cargo.lock
+
+# IntelliJ related
+.idea/
+*.iml
+
+# VS Code related
+.vscode/
+
+# Byebug command history
+.byebug_history
+
+# Mac system files
+.DS_Store
+
+# Backup files
+*~
+*.swp
+*.swo
+
+# Coverage and test output
+/coverage/
+/test-output/
+
+# Logs
+*.log
+
+# Node modules (if using JS tooling)
+node_modules/

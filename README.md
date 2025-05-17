@@ -14,11 +14,11 @@ This project is a simple chess engine implemented in Rust. It provides the basic
 1. Ensure you have Rust installed on your machine. You can install it from [rust-lang.org](https://www.rust-lang.org/).
 2. Clone the repository:
    ```
-   git clone https://github.com/yourusername/rust-chess-engine.git
+   git clone https://github.com/yourusername/chess-engine-rs.git
    ```
 3. Navigate to the project directory:
    ```
-   cd rust-chess-engine
+   cd chess-engine-rs
    ```
 4. Build the project:
    ```
