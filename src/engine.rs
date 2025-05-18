@@ -16,6 +16,15 @@ impl Engine {
         // Implement logic to make a move
     }
 
+    pub fn make_computer_move(&mut self, depth: i32) {
+        // Implement logic to make a computer move
+    }
+
+    pub fn is_game_over(&mut self) -> bool {
+        // Implement logic to make a computer move
+        false
+    }
+
     pub fn evaluate_position(&self) -> i32 {
         // Implement logic to evaluate the current position
         0

@@ -1,3 +1,4 @@
+use crate::board::Move;
 use crate::engine::Engine;
 use crate::piece::Color;
 use std::io::{self, Write};
@@ -11,8 +12,9 @@ pub enum GameMode {
 #[derive(Debug, PartialEq, Eq)]
 pub struct Cli {
     engine: Engine,
-    current_player: Color,
-    game_mode: GameMode,
+    computer_depth: i32,
+    current_turn: Color,
+    game_mode: Color,
 }
 
 pub fn get_user_input(prompt: &str) -> String {
@@ -26,11 +28,12 @@ pub fn get_user_input(prompt: &str) -> String {
 }
 
 impl Cli {
-    pub fn new(engine: Engine, current_player: Color) -> Cli {
+    pub fn new(engine: Engine, computer_depth: i32, current_turn: Color) -> Cli {
         Cli {
             engine,
-            current_player,
-            game_mode: GameMode::White,
+            computer_depth,
+            current_turn,
+            game_mode: Color::White,
         }
     }
 
@@ -56,14 +59,14 @@ impl Cli {
     fn select_game_mode(&mut self) {
         let input = get_user_input("select your color [white/black]: ");
         match input.as_str() {
-            "white" => self.game_mode = GameMode::White,
-            "black" => self.game_mode = GameMode::Black,
+            "white" => self.game_mode = Color::White,
+            "black" => self.game_mode = Color::Black,
             _ => println!("invalid mode selected. defaulting to white."),
         }
     }
 
     fn display_board(&self) {
-        println!("{:?} to move", self.current_player);
+        println!("{:?} to move", self.current_turn);
     }
 
     fn display_legal_moves(&self) {
@@ -78,5 +81,48 @@ impl Cli {
 
     fn game_loop(&mut self) {
         self.display_board();
+
+        // Main game loop
+        loop {
+            let game_over = self.engine.is_game_over();
+            if game_over {
+                println!("Game over.");
+                break;
+            }
+
+            // Determine if the current player is the computer or human
+            if self.current_turn != self.game_mode {
+                println!("Computer is thinking...");
+                self.engine.make_computer_move(self.computer_depth);
+                self.display_board();
+            } else {
+                println!("Player's turn...");
+                let input = get_user_input("{self.current_turn} to move: ");
+                match input.as_str() {
+                    "resign" => {
+                        println!("Thanks for playing!");
+                        break;
+                    }
+                    _ => self.process_command(input),
+                }
+            }
+        }
+    }
+
+    fn process_command(&mut self, command: String) {
+        match command.as_str() {
+            "help" => self.display_welcome(),
+            "board" => self.display_board(),
+            "moves" => self.display_legal_moves(),
+            _ => {
+                // Parse the move and make it
+                let mv = Move::from_string(command);
+                if mv.is_valid() {
+                    self.engine.make_move(mv);
+                } else {
+                    println!("Invalid move.");
+                }
+            }
+        }
     }
 }

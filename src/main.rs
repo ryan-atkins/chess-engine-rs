@@ -6,6 +6,6 @@ mod piece;
 use crate::cli::Cli;
 
 fn main() {
-    let mut cli = Cli::new(engine::Engine::new(), piece::Color::White);
+    let mut cli = Cli::new(engine::Engine::new(), 3, piece::Color::White);
     cli.start();
 }
