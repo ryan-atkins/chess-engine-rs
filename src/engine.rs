@@ -1,30 +1,29 @@
-struct Engine {
-    board: Board,
+use crate::board::Move;
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Engine {
     // Additional fields for game state can be added here
 }
 
 impl Engine {
     pub fn new() -> Self {
         Engine {
-            board: Board::new(),
             // Initialize other fields as necessary
         }
     }
 
-    pub fn make_move(&mut self, mv: Move) -> Result<(), String> {
+    pub fn make_move(&mut self, mv: Move) {
         // Implement logic to make a move
-        if self.board.is_valid_move(&mv) {
-            self.board.apply_move(mv);
-            Ok(())
-        } else {
-            Err("Invalid move".to_string())
-        }
     }
 
     pub fn evaluate_position(&self) -> i32 {
         // Implement logic to evaluate the current position
-        0 // Placeholder for evaluation score
+        0
     }
 
     // Additional methods for the chess engine can be added here
+    pub fn get_legal_moves(&self) -> Vec<Move> {
+        // Implement logic to evaluate the current position
+        Vec::new() // Placeholder for legal moves
+    }
 }
