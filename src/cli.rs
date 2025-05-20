@@ -66,7 +66,7 @@ impl Cli {
     }
 
     fn display_board(&self) {
-        println!("{:?} to move", self.current_turn);
+        println!("-this is the board-");
     }
 
     fn display_legal_moves(&self) {
@@ -80,8 +80,6 @@ impl Cli {
     }
 
     fn game_loop(&mut self) {
-        self.display_board();
-
         // Main game loop
         loop {
             let game_over = self.engine.is_game_over();
@@ -90,20 +88,24 @@ impl Cli {
                 break;
             }
 
-            // Determine if the current player is the computer or human
+            self.display_board();
+
+            // Determine if the player to move is the computer or human
             if self.current_turn != self.game_mode {
+                println!("{:?} to move: ", self.current_turn);
                 println!("Computer is thinking...");
                 self.engine.make_computer_move(self.computer_depth);
-                self.display_board();
+                self.current_turn = !self.current_turn;
             } else {
                 println!("Player's turn...");
-                let input = get_user_input("{self.current_turn} to move: ");
-                match input.as_str() {
+                let input_message = format!("{:?} to move: ", self.current_turn);
+                let command = get_user_input(&input_message);
+                match command.as_str() {
                     "resign" => {
                         println!("Thanks for playing!");
                         break;
                     }
-                    _ => self.process_command(input),
+                    _ => self.process_command(command),
                 }
             }
         }
@@ -119,6 +121,7 @@ impl Cli {
                 let mv = Move::from_string(command);
                 if mv.is_valid() {
                     self.engine.make_move(mv);
+                    self.current_turn = !self.current_turn;
                 } else {
                     println!("Invalid move.");
                 }
