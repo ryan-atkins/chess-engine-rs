@@ -28,3 +28,8 @@ impl Move {
         true
     }
 }
+
+pub struct MoveGenerator {
+    from: (usize, usize),
+    to: (usize, usize),
+}

@@ -1,6 +1,7 @@
-mod board;
+mod bitboard;
 mod cli;
 mod engine;
+mod movegen;
 mod piece;
 
 use crate::cli::Cli;

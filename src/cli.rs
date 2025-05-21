@@ -1,4 +1,5 @@
-use crate::board::Move;
+use crate::bitboard::Bitboard;
+use crate::movegen::{Move, MoveGenerator};
 use crate::engine::Engine;
 use crate::piece::Color;
 use std::io::{self, Write};
@@ -11,6 +12,7 @@ pub enum GameMode {
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Cli {
+    board: Bitboard,
     engine: Engine,
     computer_depth: i32,
     current_turn: Color,
@@ -30,6 +32,7 @@ pub fn get_user_input(prompt: &str) -> String {
 impl Cli {
     pub fn new(engine: Engine, computer_depth: i32, current_turn: Color) -> Cli {
         Cli {
+            board: Bitboard::new(),
             engine,
             computer_depth,
             current_turn,
@@ -66,7 +69,7 @@ impl Cli {
     }
 
     fn display_board(&self) {
-        println!("-this is the board-");
+        println!("{}", self.board);
     }
 
     fn display_legal_moves(&self) {

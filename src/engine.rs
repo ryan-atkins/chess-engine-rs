@@ -1,4 +1,4 @@
-use crate::board::Move;
+use crate::movegen::{Move, MoveGenerator};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Engine {
