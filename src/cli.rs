@@ -66,6 +66,8 @@ impl Cli {
             "black" => self.game_mode = Color::Black,
             _ => println!("invalid mode selected. defaulting to white."),
         }
+
+        println!("\n{}\n", "=".repeat(50));
     }
 
     fn display_board(&self) {
@@ -94,14 +96,12 @@ impl Cli {
             self.display_board();
 
             // Determine if the player to move is the computer or human
-            if self.current_turn != self.game_mode {
-                println!("{:?} to move: ", self.current_turn);
+            if self.board.get_side_to_move() != self.game_mode {
                 println!("Computer is thinking...");
                 self.engine.make_computer_move(self.computer_depth);
-                self.current_turn = !self.current_turn;
             } else {
                 println!("Player's turn...");
-                let input_message = format!("{:?} to move: ", self.current_turn);
+                let input_message = format!("enter [command/move]: ");
                 let command = get_user_input(&input_message);
                 match command.as_str() {
                     "resign" => {

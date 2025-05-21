@@ -55,16 +55,31 @@ lazy_static::lazy_static! {
 pub struct Bitboard {
     // 12 bitboard constants. 6 pieces per color
     bitboards: [u64; 12],
+    side_to_move: Color,
 }
 
 impl Bitboard {
     pub fn new() -> Self {
         Bitboard {
             bitboards: INITIAL_BOARD,
+            side_to_move: Color::White,
         }
     }
 
-    pub fn get_piece_at(&self, square: usize) -> Option<[usize; 2]> {
+    pub fn get_side_to_move(&self) -> Color {
+        self.side_to_move
+    }
+
+    pub fn make_move(&mut self, from: usize, to: usize) -> bool {
+        // Implement making moves on the board
+
+        // Update the side to move
+        self.side_to_move = !self.side_to_move;
+
+        true
+    }
+
+    fn get_piece_at(&self, square: usize) -> Option<[usize; 2]> {
         let bit = 1 << square;
         // check white pieces
         for piece_type in 0..6 {
@@ -80,6 +95,23 @@ impl Bitboard {
         }
         None
     }
+
+    fn is_check(&self) -> bool {
+        // Check if the current player's king is in check
+        false
+    }
+
+    fn is_checkmate(&self) -> bool {
+        // Check if the current player is in checkmate
+        false
+    }
+
+    fn is_stalemate(&self) -> bool {
+        // Check if the game is in stalemate
+        false
+    }
+
+
 }
 
 impl fmt::Display for Bitboard {
@@ -116,6 +148,20 @@ impl fmt::Display for Bitboard {
 
         board_str.push_str("  ---------------\n");
         board_str.push_str("  a b c d e f g h\n");
+
+        board_str.push_str(&format!("{:?} to move\n", self.side_to_move));
+
+        if self.is_check() {
+            board_str.push_str("Check!\n");
+        }
+
+        if self.is_checkmate() {
+            board_str.push_str("Checkmate!\n");
+        }
+
+        if self.is_stalemate() {
+            board_str.push_str("Stalemate!\n");
+        }
 
         write!(f, "{}", board_str);
         Ok(())
